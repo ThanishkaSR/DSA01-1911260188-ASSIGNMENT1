@@ -1,0 +1,114 @@
+# TASK 11 – Recommend and Defend the Final Design
+
+## 1. Introduction
+
+After completing the previous tasks, I have compared different data types, fare calculations and programming methods. Based on the results, I have selected a design for the metro smart-card system.
+
+My aim is to make the system simple, accurate and suitable for handling a large number of journeys.
+
+## 2. Recommended Data Types, Constants and Classes
+
+I would use the following in my final design:
+
+**Data Types:**
+
+- `int` – To store zone numbers and journey hours.
+- `long long` – To store fare and card balance in paise.
+- `bool` – To check peak hours and journey approval.
+- `enum class` – To represent Inner, Middle and Outer zones.
+
+**Constants:**
+
+```cpp
+constexpr int INNER_FARE = 1000;
+constexpr int MIDDLE_FARE = 2000;
+constexpr int OUTER_FARE = 3000;
+
+constexpr int PEAK_SURCHARGE = 20;
+constexpr long long MIN_BALANCE = 5000;
+```
+
+I would use constants because fare values can be changed in one place instead of changing them throughout the program.
+
+**Classes:**
+
+I would use a `SmartCard` class to store the balance and perform operations like checking the balance and deducting the fare.
+
+I would keep the balance private so that other parts of the program cannot change it directly.
+
+## 3. How Will a Fare Revision Be Done?
+
+If the metro changes its fare, I can update the corresponding fare constant in the program.
+
+For example, if the Inner Zone fare changes from ₹10 to ₹15, I only need to change:
+
+```cpp
+constexpr int INNER_FARE = 1500;
+```
+
+Since the fare is stored in paise, ₹15 is represented as 1500 paise.
+
+This makes the program easier to maintain and reduces the chance of mistakes.
+
+## 4. Limitations of My Design
+
+My design works well for the current three-zone fare system, but it has some limitations.
+
+- If a fourth zone is added, the zone definition and fare calculation must be updated.
+- If the fare changes frequently, the program needs to be modified and compiled again.
+- Student and senior citizen concessions need additional rules.
+- Monthly passes and different discounts are not included in the current design.
+
+So, the design works for the present requirements, but it needs some changes when new features are added.
+
+## 5. Will the Design Work for the Whole Metro Network?
+
+The metro may process up to 30,00,000 journeys per day.
+
+From my previous experiment, I found that the total collection for this number of journeys can reach ₹10,80,00,000 when the fare is ₹36 per journey.
+
+The total in paise is 10,800,000,000, which is greater than the maximum value of a typical `int`.
+
+Therefore, I would use `long long` for storing the total collection.
+
+Each fare calculation and balance check takes constant time, so the time complexity per journey is O(1).
+
+The system can handle a large number of journeys, provided that it is properly implemented and tested.
+
+## 6. Alternative Concept – Reading Fare Values from a Configuration File
+
+Instead of writing fare values directly inside the program, we can store them in a separate configuration file.
+
+For example, a file named `fare.txt` can contain:
+
+```text
+1000
+2000
+3000
+```
+
+The program can read these values when it starts.
+
+If the metro changes its fares, we only need to update the file instead of changing the C++ code and compiling it again.
+
+**Complexity Analysis:**
+
+- Reading the fare values takes O(z) time, where z is the number of zones.
+- Storing the fare values takes O(z) space.
+- Looking up a fare using an array index takes O(1) time.
+
+In the current design, changing a fare requires modifying and recompiling the program. With a configuration file, the fare can be changed without recompiling.
+
+However, the program must check that the file contains valid fare values before using them.
+
+I think the configuration file method is more useful when fares change frequently.
+
+## 7. Final Recommendation
+
+After comparing the different methods, I would choose the object-oriented design with private card balance, `long long` for money and `constexpr` for fare values.
+
+This design is simple, accurate and easy to maintain. It also prevents the balance from going below the required minimum amount.
+
+My previous calculations showed that `long long` can store the collection for 30,00,000 journeys, whereas `int` cannot.
+
+Therefore, I would retain the basic OOP design for the current metro requirements and modify it when new features are introduced.
