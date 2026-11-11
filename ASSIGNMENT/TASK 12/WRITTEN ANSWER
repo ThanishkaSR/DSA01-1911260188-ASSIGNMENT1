@@ -1,0 +1,245 @@
+# TASK 12 – Re-evaluate and Adapt the Design
+
+## A. Impact Analysis – 2 Marks
+
+The metro has introduced three new requirements. Because of these changes, my original three-zone fare system needs some modifications.
+
+**1. Addition of Airport Zone**
+
+A new Airport Zone is added with a fare of ₹60.
+
+The zone list must now contain four zones instead of three.
+
+**2. Weekend Discount**
+
+A 10% discount is given during weekends.
+
+This discount cannot be combined with the 20% peak-hour surcharge.
+
+So, if a journey happens during both a weekend and peak hours, only the weekend discount will be applied.
+
+**3. Monthly Pass**
+
+Passengers can purchase a monthly pass for any two selected zones. They can travel unlimited times in those two zones without paying the normal journey fare.
+
+**Changes required in my original program:**
+
+- Add Airport to the `Zone` enum.
+- Add a new fare constant of 6000 paise.
+- Update the fare calculation using a switch or an array.
+- Add a separate condition for the weekend discount.
+- Add a `Pass` class to store the two selected zones.
+- Modify the `SmartCard` class to work with the monthly pass.
+
+## B. Evaluation of the Original Design – 2 Marks
+
+My original design used a switch statement to calculate fares and a `SmartCard` class to manage the balance.
+
+The original design can handle the new requirements, but some changes are needed.
+
+**1. Can the switch statement handle the fourth zone?**
+
+Yes. We can add another case for the Airport Zone.
+
+```cpp
+case Zone::Airport:
+    fare = 6000;
+    break;
+```
+
+**2. Can the original fare calculation handle the weekend discount?**
+
+The original fare calculation only supported the peak surcharge. So, I need to add another condition for the weekend discount.
+
+For example:
+
+- Normal Airport fare = ₹60
+- Peak surcharge = 20%
+- Weekend discount = 10%
+
+If both conditions occur together, the weekend discount is applied instead of the peak surcharge.
+
+Weekend fare = ₹60 − ₹6 = ₹54.
+
+**3. Can the SmartCard class handle monthly passes?**
+
+The original `SmartCard` class only manages the card balance. It does not store information about monthly passes.
+
+So, I need to add a separate `Pass` class to store the two selected zones and check whether the passenger has a valid pass for that journey.
+
+I would modify the existing design instead of replacing it completely.
+
+## C. Adaptation of the Design – 2 Marks
+
+I have decided to modify my original OOP design.
+
+I use a `Pass` class to store the two selected zones and a `SmartCard` class to manage the balance and journey.
+
+**C++ Program:**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+enum class Zone
+{
+    Inner, Middle, Outer, Airport
+};
+
+class Pass
+{
+private:
+    Zone zone1, zone2;
+
+public:
+    Pass(Zone a, Zone b)
+    {
+        zone1 = a;
+        zone2 = b;
+    }
+
+    bool covers(Zone z)
+    {
+        return z == zone1 || z == zone2;
+    }
+};
+
+class SmartCard
+{
+private:
+    long long balance;
+    Pass pass;
+
+public:
+    SmartCard(long long b, Zone a, Zone c)
+        : balance(b), pass(a, c)
+    {
+    }
+
+    void travel(Zone z, bool peak, bool weekend)
+    {
+        long long fare = 0;
+
+        switch (z)
+        {
+            case Zone::Inner:
+                fare = 1000;
+                break;
+
+            case Zone::Middle:
+                fare = 2000;
+                break;
+
+            case Zone::Outer:
+                fare = 3000;
+                break;
+
+            case Zone::Airport:
+                fare = 6000;
+                break;
+        }
+
+        if (pass.covers(z))
+        {
+            fare = 0;
+            cout << "Monthly pass used. ";
+        }
+        else if (weekend)
+        {
+            fare = fare - fare * 10 / 100;
+        }
+        else if (peak)
+        {
+            fare = fare + fare * 20 / 100;
+        }
+
+        if (balance - fare >= 5000)
+        {
+            balance = balance - fare;
+
+            cout << "Journey allowed. Fare: Rs "
+                 << fare / 100.0;
+        }
+        else
+        {
+            cout << "Journey denied. Low balance.";
+        }
+
+        cout << " Balance: Rs "
+             << balance / 100.0 << endl;
+    }
+};
+
+int main()
+{
+    // Monthly pass for Inner and Middle zones
+    SmartCard card(20000, Zone::Inner, Zone::Middle);
+
+    card.travel(Zone::Inner, false, false);
+
+    card.travel(Zone::Outer, true, false);
+
+    card.travel(Zone::Airport, true, true);
+
+    card.travel(Zone::Middle, false, true);
+
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```text
+Monthly pass used. Journey allowed. Fare: Rs 0 Balance: Rs 200
+Journey allowed. Fare: Rs 36 Balance: Rs 164
+Journey allowed. Fare: Rs 54 Balance: Rs 110
+Monthly pass used. Journey allowed. Fare: Rs 0 Balance: Rs 110
+```
+
+**Explanation of the output:**
+
+1. Inner Zone: The passenger has a monthly pass, so no fare is charged.
+2. Outer Zone: It is peak time, so 20% surcharge is added to ₹30. The fare becomes ₹36.
+3. Airport Zone: Both peak and weekend conditions are true. Only the 10% weekend discount is applied, making the fare ₹54.
+4. Middle Zone: The passenger has a monthly pass, so no fare is charged.
+
+The minimum balance of ₹50 is maintained after every journey.
+
+## D. Evidence-Based Defence – 2 Marks
+
+After comparing the original and modified designs, I decided to modify the existing OOP design.
+
+The following points support my decision:
+
+**1. Accuracy**
+
+Money is stored in integer paise using `long long`. This avoids decimal rounding problems during fare calculations.
+
+**2. Easy to update**
+
+The new Airport Zone and weekend discount can be added without changing the complete program.
+
+**3. Monthly pass**
+
+The new `Pass` class checks whether the passenger has selected the zone in their monthly pass. If the zone is covered, the normal fare is not charged.
+
+**4. Balance protection**
+
+The `SmartCard` class keeps the balance private and checks the minimum ₹50 balance before allowing a journey.
+
+**5. Complexity**
+
+- Fare calculation: O(1)
+- Monthly pass checking: O(1)
+- Balance checking and deduction: O(1)
+- Extra space for storing the two pass zones: O(1)
+
+The new features do not change the time complexity of processing one journey.
+
+## Final Conclusion
+
+After considering the new requirements, I would modify my original OOP design instead of completely redesigning it.
+
+The switch statement can handle the fourth zone, and the new weekend discount and monthly pass can be added using separate conditions and a `Pass` class.
+
+I feel this is a better approach because it keeps the original program simple while allowing new features to be added. It also maintains accurate fare calculation and protects the minimum card balance.
