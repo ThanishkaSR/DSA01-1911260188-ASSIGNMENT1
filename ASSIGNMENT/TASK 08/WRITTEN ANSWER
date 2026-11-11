@@ -1,0 +1,217 @@
+# TASK 8 – Read and Print Data Safely
+
+## 1. Introduction
+
+In the metro smart-card system, the user enters details such as the zone, journey time and card balance. Sometimes the user may enter incorrect values, such as letters instead of numbers.
+
+So, the program should check the input before using it. It should also display the fare and remaining balance in a clear format.
+
+## 2. Reading input using `cin`
+
+In C++, we use `cin` to get input from the user.
+
+For example:
+
+```cpp
+int hour;
+cin >> hour;
+```
+
+If the user enters a number, the input is accepted. But if the user enters letters instead of a number, `cin` fails.
+
+We can check this using:
+
+```cpp
+if (cin.fail())
+```
+
+If input fails, we use:
+
+- `cin.clear()` to remove the error state.
+- `cin.ignore()` to remove the incorrect input.
+
+This allows the program to ask the user again.
+
+## 3. Formatting money using `<iomanip>`
+
+The `<iomanip>` header helps us display money neatly.
+
+- `setw()` sets the width of the output.
+- `setfill()` fills empty spaces with a character.
+- `fixed` displays decimal values in fixed format.
+- `setprecision(2)` displays two digits after the decimal point.
+
+For example, ₹30 can be displayed as ₹30.00.
+
+## 4. C++ Program
+
+The following program accepts the zone, hour and balance, checks invalid inputs, calculates the fare and displays the journey report.
+
+```cpp
+#include <iostream>
+#include <iomanip>
+#include <limits>
+using namespace std;
+
+int main()
+{
+    int zone, hour;
+    long long balance;
+
+    // Read zone
+    cout << "Enter zone (1-Inner, 2-Middle, 3-Outer): ";
+
+    while (!(cin >> zone) || zone < 1 || zone > 3)
+    {
+        cout << "Invalid zone. Enter again: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+
+    // Read hour
+    cout << "Enter journey hour (0-23): ";
+
+    while (!(cin >> hour) || hour < 0 || hour > 23)
+    {
+        cout << "Invalid hour. Enter again: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+
+    // Read balance
+    cout << "Enter card balance in rupees: ";
+
+    while (!(cin >> balance) || balance < 0)
+    {
+        cout << "Invalid balance. Enter again: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+
+    // Calculate base fare in paise
+    long long fare = 0;
+
+    if (zone == 1)
+        fare = 1000;
+    else if (zone == 2)
+        fare = 2000;
+    else
+        fare = 3000;
+
+    // Check peak hours
+    if ((hour >= 8 && hour < 10) ||
+        (hour >= 17 && hour < 20))
+    {
+        fare = fare + fare * 20 / 100;
+    }
+
+    // Convert balance into paise
+    balance = balance * 100;
+
+    cout << "\n--- JOURNEY REPORT ---\n";
+
+    cout << "Base fare: Rs "
+         << fixed << setprecision(2)
+         << (zone * 1000) / 100.0 << endl;
+
+    if (balance - fare >= 5000)
+    {
+        balance = balance - fare;
+
+        cout << "Journey Status: Allowed\n";
+    }
+    else
+    {
+        cout << "Journey Status: Denied\n";
+    }
+
+    cout << "Fare: Rs " << fare / 100.0 << endl;
+
+    cout << "Remaining Balance: Rs "
+         << balance / 100.0 << endl;
+
+    return 0;
+}
+```
+
+## 5. Sample Input and Output
+
+**Input:**
+
+```text
+Enter zone (1-Inner, 2-Middle, 3-Outer): 3
+Enter journey hour (0-23): 9
+Enter card balance in rupees: 100
+```
+
+**Output:**
+
+```text
+--- JOURNEY REPORT ---
+Base fare: Rs 30.00
+Journey Status: Allowed
+Fare: Rs 36.00
+Remaining Balance: Rs 64.00
+```
+
+The passenger travels in the Outer Zone during peak hours. So, a 20% surcharge is added to the ₹30 fare. The final fare is ₹36, and the remaining balance is ₹64.
+
+## 6. Handling Incorrect Input
+
+For example, if the user enters `abc` instead of a number, `cin` will fail.
+
+The program uses `cin.clear()` to clear the error and `cin.ignore()` to remove the incorrect input. Then it asks the user to enter the value again.
+
+This prevents the program from getting stuck because of incorrect input.
+
+## 7. Alternative Concept – Using `getline()` and `stoi()`
+
+Another way to read input is by using `getline()` and `stoi()`.
+
+- `getline()` reads the complete input as a string.
+- `stoi()` converts the string into an integer.
+- `try-catch` handles errors when the entered string is not a valid integer.
+
+Example:
+
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main()
+{
+    string input;
+
+    cout << "Enter journey hour: ";
+    getline(cin, input);
+
+    try
+    {
+        int hour = stoi(input);
+
+        cout << "Entered hour: " << hour;
+    }
+    catch (...)
+    {
+        cout << "Invalid input";
+    }
+
+    return 0;
+}
+```
+
+If the user enters letters instead of a number, the program catches the error and displays an invalid input message.
+
+## 8. Complexity Analysis
+
+Both methods take O(L) time to process an input line of length L.
+
+- **Using `cin`:** Reads the value directly and checks whether the input is valid. It uses a small amount of input buffer space.
+- **Using `getline()` and `stoi()`:** Reads the complete line and then converts it. It needs extra space to store the input string.
+
+I prefer using `cin` for this metro program because the inputs are simple numbers. It is easy to use and suitable for a beginner-level program.
+
+## 9. Conclusion
+
+From this task, I understood how to read user input safely and handle incorrect values in C++. I also learned how to format money and display a proper journey report. These checks help make the metro fare program easier to use and more reliable.
