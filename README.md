@@ -1,41 +1,39 @@
-# DSA01-1911260188-ASSIGNMENT1
 # Assignment 1 – CO1
-## Design, Implement and Validate the Fare Logic of a City Metro Smart-Card System
 
-### Student Details
-- **Name:** THANISHKA S R
-- **Register Number:** 1911260188
+**Name:** THANISHKA S R  
+**Register Number:** 1911260188  
+**Compiler:** OneCompiler (C++)  
+**Compiler Version:** As displayed in OneCompiler  
 
-### Compiler Details
-- **Compiler:** SIMATS Online Programming Lab
-- **Compiler Version:** Not specified
-- **C++ Standard:** To be verified
+**GitHub Repository:**  
+https://github.com/ThanishkaSR/DSA01-1911260188-ASSIGNMENT1
 
-### Compilation Command
+## Compilation Command
 
 ```bash
-g++ -std=c++17 -Wall -Wextra filename.cpp -o output
+g++ -std=c++17 -Wall -Wextra task.cpp -o task
 ```
 
-### Execution Steps
-1. Open the SIMATS Online Programming Lab.
-2. Select C++ programming.
-3. Enter the source code in the program editor.
-4. Provide the required input.
-5. Click **Run** to execute the program.
-6. Verify and save the output.
+## Steps to Run
 
-### Task Results
+1. Open https://onecompiler.com/cpp.
+2. Select C++.
+3. Copy the required task's code into the editor.
+4. Provide input in the STDIN section, if required.
+5. Click Run to execute the program.
+6. Verify the output and save the screenshot.
 
-- **Task 01:** To be updated.
-- **Task 02:** To be updated.
-- **Task 03:** To be updated.
-- **Task 04:** To be updated.
-- **Task 05:** To be updated.
-- **Task 06:** To be updated.
-- **Task 07:** To be updated.
-- **Task 08:** To be updated.
-- **Task 09:** To be updated.
-- **Task 10:** To be updated.
-- **Task 11:** To be updated.
-- **Task 12:** To be updated.
+## Task Results
+
+- **Task 1:** Analysed the metro smart-card system and identified the objects, classes and OOP concepts.
+- **Task 2:** Implemented constants, enumerations and identifiers.
+- **Task 3:** Studied data types, their sizes, ranges and suitable usage.
+- **Task 4:** Demonstrated type conversions and type casting.
+- **Task 5:** Evaluated expressions, operators and operator precedence.
+- **Task 6:** Implemented control structures using conditional statements and loops.
+- **Task 7:** Compared procedural programming and object-oriented programming.
+- **Task 8:** Implemented input validation and formatted output.
+- **Task 9:** Tested fare calculations and different input conditions.
+- **Task 10:** Analysed numerical limits, overflow and floating-point precision.
+- **Task 11:** Evaluated the original smart-card design and its limitations.
+- **Task 12:** Redesigned the fare system to support an Airport zone, weekend discounts and monthly passes.
