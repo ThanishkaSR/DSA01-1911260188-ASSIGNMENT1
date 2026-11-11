@@ -2,80 +2,72 @@
 
 ## 1. Identification of Objects
 
-The City Metro Smart-Card System can be designed using the following objects:
+For designing a City Metro Smart-Card System, I would divide the entire system into smaller objects based on their responsibilities. This makes the program easier to understand and manage.
+
+The main objects that can be used are:
 
 **1. SmartCard**
 
-- Attributes: Card ID and balance.
-- Behaviours: Recharge the card, deduct fare and check the available balance.
+A smart card is used by passengers to pay for their metro journeys. It stores details such as the card ID and available balance. It should also provide functions to recharge the card, check the balance and deduct the fare after a successful journey.
 
 **2. Passenger**
 
-- Attributes: Passenger ID and passenger type.
-- Behaviours: Select passenger category and access applicable concessions.
+The passenger object stores information about the person using the metro service, such as their passenger ID and category. This is useful because students and senior citizens may receive fare concessions.
 
 **3. Journey**
 
-- Attributes: Source zone, destination zone and travel time.
-- Behaviours: Calculate the journey fare and validate the journey.
+A journey object represents a passenger's travel between two metro zones. It stores the source zone, destination zone and time of travel. It is responsible for calculating the fare based on the journey details.
 
 **4. Zone**
 
-- Attributes: Zone ID, zone name and base fare.
-- Behaviours: Provide the applicable zone fare.
+The metro network is divided into Inner, Middle and Outer zones. Each zone has its own fare value. The zone object helps the system identify the applicable fare for a journey.
 
 **5. FareTable**
 
-- Attributes: Zone fares, peak surcharge and concession details.
-- Behaviours: Calculate the applicable journey fare.
+The fare table maintains the fare details of the metro system, including the basic fares, peak-hour surcharge and applicable concessions. It helps calculate the final amount that a passenger needs to pay.
 
-## 2. Object-Oriented Programming Concepts
+## 2. Application of OOP Concepts
 
-**Encapsulation:** The smart-card balance is maintained as private data and accessed through public methods. This prevents unauthorised modification of the balance.
+The four main concepts of object-oriented programming can be applied to this system.
 
-**Abstraction:** The passenger can recharge the card and pay the fare without knowing the internal fare calculation process.
+**Encapsulation:** The balance stored in a smart card should not be directly accessible or modified by other parts of the program. Therefore, I would keep the balance private and allow changes only through methods such as recharge and deduct fare. This protects the card balance from incorrect modifications.
 
-**Inheritance:** Student and Senior Citizen classes can inherit common properties and behaviours from a Passenger class.
+**Abstraction:** A passenger only needs to know how to recharge the card or use it for travelling. The internal process of checking the balance and calculating the fare can happen in the background without being shown to the passenger.
 
-**Polymorphism:** Different passenger categories can have different implementations of fare calculation to apply their respective concessions.
+**Inheritance:** Student and Senior Citizen can be treated as different types of passengers. They can inherit common details from a general Passenger class while having their own concession-related properties.
 
-## 3. Business Rules
+**Polymorphism:** Fare calculation can work differently for different passenger categories. For example, the fare calculation method can be implemented differently for regular passengers and passengers eligible for concessions.
 
-1. Inner Zone fare is ₹10.
-2. Middle Zone fare is ₹20.
-3. Outer Zone fare is ₹30.
-4. Peak hours are 8 AM to 10 AM and 5 PM to 8 PM.
-5. A 20% surcharge is applied during peak hours.
-6. Exactly 10 AM and 8 PM are considered non-peak hours.
-7. The smart card must retain a minimum balance of ₹50 after fare deduction.
-8. Student and senior citizen concessions must be considered.
-9. Negative recharge amounts and invalid inputs must be rejected.
-10. Money should be stored in integer paise to avoid floating-point precision errors.
+## 3. Business Rules of the Metro System
 
-## 4. Procedural Programming vs Object-Oriented Programming
+Before implementing the system, certain rules must be followed to make sure that fare calculation is accurate.
 
-**Procedural Programming:**
+The basic fare depends on the travel zone. The fare for the Inner Zone is ₹10, the Middle Zone is ₹20 and the Outer Zone is ₹30.
 
-Procedural programming organises a program into functions that perform specific operations. Data and functions are maintained separately. It is suitable for smaller programs but becomes difficult to maintain as the system grows.
+During peak hours, a surcharge of 20% is added to the basic fare. Peak hours are from 8 AM to 10 AM and from 5 PM to 8 PM. The exact boundary times of 10 AM and 8 PM are treated as non-peak hours.
 
-**Object-Oriented Programming:**
+Another important condition is that a passenger must have at least ₹50 remaining in their smart card after the fare has been deducted. If the remaining balance is less than ₹50, the journey should not be allowed.
 
-Object-oriented programming organises a program around objects that combine data and related functions. It supports encapsulation, abstraction, inheritance and polymorphism.
+The system should also consider concessions for students and senior citizens. The concession percentage is not specified in the given problem, so it should be treated as a configurable value rather than assuming a fixed rate.
 
-For the City Metro Smart-Card System, object-oriented programming is more suitable because passenger details, card balances, journeys and fare calculations can be organised into separate classes.
+Apart from these rules, the system must reject negative recharge amounts, invalid zone selections and incorrect time inputs. I would also store money values in integer paise instead of using floating-point values to avoid precision errors.
+
+## 4. Procedural Programming and Object-Oriented Programming
+
+In procedural programming, the program is divided into functions, and each function performs a particular operation. For example, separate functions can be written for calculating fares, checking balances and recharging cards. However, as the system becomes larger, managing the data and functions separately can become difficult.
+
+Object-oriented programming takes a different approach. It combines related data and functions into objects. For example, the SmartCard class can maintain the card balance and provide functions to recharge or deduct money.
+
+For this metro application, I would prefer object-oriented programming because the system contains different entities such as passengers, smart cards, journeys and fare details. Keeping them as separate classes makes the program more organised and easier to modify when new features are introduced.
 
 ## 5. Complexity Analysis
 
-**Procedural Programming:**
-- Time Complexity per Journey: O(1)
-- Space Complexity per Card: O(1)
+For a single journey, both procedural and object-oriented approaches can calculate the fare and check the balance using a fixed number of operations.
 
-**Object-Oriented Programming:**
-- Time Complexity per Journey: O(1)
-- Space Complexity per Card: O(1)
+Therefore, the time complexity per journey is O(1) for both approaches. Similarly, the space required to store one smart card's basic details is O(1).
 
-Both approaches have constant time complexity for a single journey. However, object-oriented programming provides better organisation, reusability and maintainability as the system expands.
+Although both approaches have the same basic complexity, I would choose OOP because it provides better organisation, code reusability and maintainability as the number of passengers and features increases.
 
 ## 6. Conclusion
 
-Object-oriented programming is suitable for designing the City Metro Smart-Card System because it provides encapsulation, abstraction, inheritance and polymorphism. It helps organise the system into manageable components and makes it easier to maintain, test and extend.
+After analysing the requirements, I feel that object-oriented programming is a suitable approach for developing the City Metro Smart-Card System. It allows each part of the system to be handled separately while keeping related data and functions together. It also makes it easier to introduce additional features, such as new travel zones, passenger concessions and monthly passes, in the future.
