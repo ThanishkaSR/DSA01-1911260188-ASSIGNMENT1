@@ -1,1 +1,220 @@
+# TASK 3 – Choose Data Types and Check Type Compatibility
 
+## 1. Choosing the data types
+
+For the metro smart-card system, I need to choose suitable data types for storing fares, balances, time, zones and the number of journeys. I selected the types based on the values that the program needs to store.
+
+The data types I would use are:
+
+- **Fare – `long long`:** I would store the fare in paise instead of rupees. For example, ₹10 will be stored as 1000 paise.
+- **Balance – `long long`:** The card balance is also stored in paise. This helps to avoid decimal calculation errors.
+- **Total collection – `long long`:** Since the metro may handle millions of journeys, a larger data type is needed to store the total collection.
+- **Time – `int`:** The hour can be stored as an integer from 0 to 23. For example, 8 represents 8 AM and 17 represents 5 PM.
+- **Zone number – `int`:** An integer is enough to represent the zone number.
+- **Zone – `enum class`:** I would use this to represent Inner, Middle and Outer zones instead of using random numbers.
+- **Journey count – `long long`:** This can store a large number of journeys.
+- **Peak-hour status – `bool`:** This stores either true or false depending on whether it is peak time.
+- **Station code – `char`:** This can be used if a station needs a single-character code.
+- **`float` and `double`:** These are used for decimal values, but I would avoid using them for fare and balance calculations.
+- **`auto`:** This allows the compiler to identify the data type automatically from the assigned value.
+
+For representing the zones, I would write:
+
+```cpp
+enum class Zone
+{
+    Inner,
+    Middle,
+    Outer
+};
+```
+
+I chose these data types because they are suitable for the values used in the metro system.
+
+## 2. Size and range of data types
+
+The `sizeof` operator is used to find how much memory a data type occupies.
+
+The following are the commonly used sizes on a typical online GCC compiler:
+
+- `bool` – 1 byte
+- `char` – 1 byte
+- `int` – 4 bytes
+- `unsigned int` – 4 bytes
+- `long` – usually 8 bytes on a 64-bit Linux compiler
+- `long long` – 8 bytes
+- `float` – 4 bytes
+- `double` – 8 bytes
+
+These sizes can depend on the compiler and system, so I will check the actual values using OneCompiler.
+
+The `<climits>` header gives the minimum and maximum values that integer data types can store.
+
+Some important values are:
+
+- `INT_MIN` – smallest value of int.
+- `INT_MAX` – largest value of int.
+- `UINT_MAX` – largest value of unsigned int.
+- `LONG_MIN` and `LONG_MAX` – limits of long.
+- `LLONG_MIN` and `LLONG_MAX` – limits of long long.
+
+I would use `long long` for money-related calculations because it can store much larger values than a normal `int`.
+
+## 3. Why I chose integer paise instead of double rupees
+
+I would store money in integer paise instead of using `double` for rupees.
+
+The main reason is that `double` may produce small rounding errors when decimal values are added or subtracted many times.
+
+For example:
+
+- ₹10 = 1000 paise
+- ₹20 = 2000 paise
+- ₹30 = 3000 paise
+
+In the program, I can write:
+
+```cpp
+long long fare = 1000;
+long long balance = 10000;
+
+balance = balance - fare;
+```
+
+The remaining balance will be exactly 9000 paise, which is ₹90.
+
+This is better for a metro system because even a small mistake in the fare can affect the passenger's balance. Using integer paise makes the calculation more accurate.
+
+## 4. Type compatibility in C++
+
+Type compatibility means how different data types work together in a program.
+
+Sometimes C++ automatically changes one data type into another when we use them in the same expression. This is called implicit type conversion.
+
+For example:
+
+**Integer and double**
+
+```cpp
+int a = 10;
+double b = 2.5;
+
+double result = a + b;
+```
+
+Here, `a` is an integer and `b` is a double. C++ automatically converts `a` into a double before adding them.
+
+So, the result will be 12.5.
+
+**Integer and bool**
+
+```cpp
+bool peak = true;
+int value = peak;
+```
+
+Here, true is converted into 1 and false is converted into 0. So, the value of `value` will be 1.
+
+**Integer division**
+
+```cpp
+int a = 7;
+int b = 2;
+
+double result = a / b;
+```
+
+Here, the result will be 3 instead of 3.5 because both values are integers. The division happens first as integer division, and only then is the result stored as a double.
+
+To get 3.5, I can write:
+
+```cpp
+double result = static_cast<double>(a) / b;
+```
+
+These examples helped me understand that we should be careful when using different data types together.
+
+## 5. Is int enough for the daily collection?
+
+According to the assignment, the metro may process up to 3,000,000 journeys per day.
+
+The highest fare is ₹30. During peak hours, a 20% surcharge is added.
+
+So,
+
+Highest fare = ₹30 + 20% of ₹30
+
+Highest fare = ₹36
+
+In paise:
+
+₹36 × 100 = 3600 paise
+
+Maximum daily collection:
+
+3,000,000 × 3600 = 10,800,000,000 paise.
+
+The maximum value of a typical 4-byte `int` is 2,147,483,647.
+
+Since the daily collection is greater than this value, `int` is not enough to store the total collection in paise.
+
+So, I would use `long long` instead. It can store a much larger value and is more suitable for this system.
+
+I have calculated this using the maximum fare without applying any concession because the assignment does not mention the exact concession percentage.
+
+## 6. Alternative method – Using double instead of long long
+
+Another way to store money is by using `double` in rupees.
+
+For example:
+
+```cpp
+double fare = 10.50;
+double balance = 100.00;
+
+balance = balance - fare;
+```
+
+This method is simple, but it may produce small rounding errors because decimal numbers cannot always be stored exactly in a computer.
+
+For example:
+
+```cpp
+double a = 0.1;
+double b = 0.2;
+
+cout << a + b;
+```
+
+The result may be slightly different from 0.3.
+
+If I use integer paise instead, I can write:
+
+```cpp
+long long a = 10;
+long long b = 20;
+
+cout << a + b;
+```
+
+The answer will be exactly 30 paise.
+
+**Time and space comparison**
+
+Both `double` and `long long` generally occupy 8 bytes on the compiler used here.
+
+Adding two values takes O(1) time in both methods because it requires only one addition operation.
+
+The space needed for one value is also O(1) in both cases.
+
+The main difference is accuracy. When many decimal values are added using `double`, small rounding errors may build up. Integer paise avoids this problem for the fare values used in this system.
+
+I have included a program below to compare both methods by adding 0.1 rupee one million times and checking the difference.
+
+## 7. Conclusion
+
+After checking the different data types, I would use `long long` for fares, balances and total collections, `int` for time and zone numbers, and `bool` for peak-hour status.
+
+I would also use `enum class` for representing the zones.
+
+I feel that storing money in integer paise is the better option because it avoids rounding errors and gives accurate results. Using `long long` for the total collection also helps the system handle a large number of journeys.
