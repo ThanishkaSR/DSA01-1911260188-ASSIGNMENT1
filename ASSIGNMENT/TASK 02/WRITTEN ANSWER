@@ -1,0 +1,170 @@
+# TASK 2 – Use Tokens, Keywords, Identifiers and Constants Correctly
+
+## 1. Defining Fare Values and Limits
+
+In the metro smart-card system, different fares are charged depending on the zone travelled. Instead of writing these values again and again in the program, we can define them in one place using constants. This will also make it easier to change the fares in the future.
+
+The following code can be used:
+
+```cpp
+constexpr int INNER_FARE = 1000;
+constexpr int MIDDLE_FARE = 2000;
+constexpr int OUTER_FARE = 3000;
+
+constexpr int PEAK_SURCHARGE_PERCENT = 20;
+constexpr long long MIN_BALANCE_PAISE = 5000;
+
+enum class Zone {
+    Inner,
+    Middle,
+    Outer
+};
+```
+
+Here, the fares are stored in paise instead of rupees. For example, ₹10 is stored as 1000 paise and ₹50 is stored as 5000 paise. This helps avoid small rounding errors while calculating money.
+
+I have used `constexpr` because the fare values are already known and do not need to change while the program is running. The compiler also checks their data types.
+
+## 2. Five Types of C++ Tokens
+
+Tokens are the smallest parts of a C++ program. A program is made up of different types of tokens. The five main types are:
+
+**1. Keywords**
+
+Keywords are words that have a special meaning in C++. We cannot use them as our own variable names.
+
+Examples: `int`, `class`, `if`, `else` and `return`.
+
+**2. Identifiers**
+
+Identifiers are the names we give to variables, functions and classes while writing a program.
+
+Examples: `fare`, `balance`, `SmartCard` and `calculateFare`.
+
+**3. Constants**
+
+Constants are values that remain fixed and cannot be changed during program execution.
+
+Examples: `10`, `20`, `30` and `0.20`.
+
+**4. Operators**
+
+Operators are symbols used to perform calculations and comparisons.
+
+Examples: `+`, `-`, `*`, `/`, `==` and `>=`.
+
+**5. Punctuators**
+
+Punctuators are symbols used to separate and organise different parts of a program.
+
+Examples: `{ }`, `( )`, `;` and `,`.
+
+## 3. Difference Between #define, const and constexpr
+
+There are different ways to declare fixed values in C++.
+
+**#define**
+
+`#define` is used to give a name to a value. Before compilation, the preprocessor replaces that name with the given value.
+
+Example:
+
+```cpp
+#define INNER_FARE 1000
+```
+
+**const**
+
+`const` is used when we want a variable to have a fixed value. Once a value is assigned, it cannot be changed.
+
+Example:
+
+```cpp
+const int MIN_BALANCE = 5000;
+```
+
+**constexpr**
+
+`constexpr` is used for values that can be fixed during compilation.
+
+Example:
+
+```cpp
+constexpr int OUTER_FARE = 3000;
+```
+
+For this metro system, I would choose `constexpr` for the fare values. It has a proper data type and the compiler can check it. Since the fares are fixed values, using `constexpr` is a suitable choice.
+
+## 4. Difference Between enum and enum class
+
+In our metro system, there are three zones: Inner, Middle and Outer. We can use `enum` to represent these zones instead of using separate numbers.
+
+Example:
+
+```cpp
+enum Zone {
+    Inner,
+    Middle,
+    Outer
+};
+```
+
+Another way is to use `enum class`:
+
+```cpp
+enum class Zone {
+    Inner,
+    Middle,
+    Outer
+};
+```
+
+I would use `enum class` because it keeps the zone names separate from other names in the program. For example, we have to write `Zone::Inner` when referring to the Inner zone.
+
+It is also safer because it does not allow zone values to be mixed with ordinary integers as easily as a normal enum. This helps prevent mistakes in the program.
+
+## 5. Naming Rules and Conventions
+
+While writing a C++ program, we should choose names that clearly explain what they are used for.
+
+Some basic naming rules I would follow are:
+
+- Use meaningful names like `fare` and `balance` instead of unclear names.
+- Start class names with a capital letter, such as `SmartCard` and `FareTable`.
+- Write constant names in capital letters with underscores, such as `MIN_BALANCE_PAISE`.
+- Do not use spaces in variable names.
+- Do not use C++ keywords as variable or function names.
+- Try to keep names short but meaningful.
+
+These rules make the program easier to read and help us understand what each variable or function does.
+
+## 6. Alternative Concept – Using #define Instead of constexpr and enum class
+
+We can also write the fare values using `#define` instead of `constexpr`, and use a normal `enum` instead of `enum class`.
+
+For example:
+
+```cpp
+#define INNER_FARE 1000
+#define MIDDLE_FARE 2000
+#define OUTER_FARE 3000
+
+enum Zone {
+    Inner,
+    Middle,
+    Outer
+};
+```
+
+Both methods can be used, but there are some differences.
+
+- **Type checking:** A macro does not have a normal data type, so the compiler cannot check it in the same way as `constexpr`. A `constexpr` value has a data type, which helps catch mistakes.
+- **Scope:** Macros do not follow normal C++ scope rules. They can be used after they are defined until they are undefined. `constexpr` and `enum class` follow normal C++ scope rules.
+- **Memory:** A macro does not occupy memory because it is replaced before compilation. A `constexpr` value usually does not need separate memory storage either.
+- **Running time:** There is practically no difference in running time between these methods for this fare calculation.
+
+After comparing both methods, I would prefer `constexpr` and `enum class`. They make the program safer and help avoid naming and type-related mistakes.
+
+## Conclusion
+
+From this task, I understood that using constants is better than writing the same fare values in different places. I would use `constexpr` for fixed fare values and `enum class` for the metro zones. These choices make the program easier to understand, safer and simpler to update if the fare rules change.
