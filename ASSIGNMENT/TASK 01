@@ -1,1 +1,81 @@
+# TASK 01 – OOP OBJECTS AND RULES
 
+## 1. Identification of Objects
+
+The City Metro Smart-Card System can be designed using the following objects:
+
+**1. SmartCard**
+
+- Attributes: Card ID and balance.
+- Behaviours: Recharge the card, deduct fare and check the available balance.
+
+**2. Passenger**
+
+- Attributes: Passenger ID and passenger type.
+- Behaviours: Select passenger category and access applicable concessions.
+
+**3. Journey**
+
+- Attributes: Source zone, destination zone and travel time.
+- Behaviours: Calculate the journey fare and validate the journey.
+
+**4. Zone**
+
+- Attributes: Zone ID, zone name and base fare.
+- Behaviours: Provide the applicable zone fare.
+
+**5. FareTable**
+
+- Attributes: Zone fares, peak surcharge and concession details.
+- Behaviours: Calculate the applicable journey fare.
+
+## 2. Object-Oriented Programming Concepts
+
+**Encapsulation:** The smart-card balance is maintained as private data and accessed through public methods. This prevents unauthorised modification of the balance.
+
+**Abstraction:** The passenger can recharge the card and pay the fare without knowing the internal fare calculation process.
+
+**Inheritance:** Student and Senior Citizen classes can inherit common properties and behaviours from a Passenger class.
+
+**Polymorphism:** Different passenger categories can have different implementations of fare calculation to apply their respective concessions.
+
+## 3. Business Rules
+
+1. Inner Zone fare is ₹10.
+2. Middle Zone fare is ₹20.
+3. Outer Zone fare is ₹30.
+4. Peak hours are 8 AM to 10 AM and 5 PM to 8 PM.
+5. A 20% surcharge is applied during peak hours.
+6. Exactly 10 AM and 8 PM are considered non-peak hours.
+7. The smart card must retain a minimum balance of ₹50 after fare deduction.
+8. Student and senior citizen concessions must be considered.
+9. Negative recharge amounts and invalid inputs must be rejected.
+10. Money should be stored in integer paise to avoid floating-point precision errors.
+
+## 4. Procedural Programming vs Object-Oriented Programming
+
+**Procedural Programming:**
+
+Procedural programming organises a program into functions that perform specific operations. Data and functions are maintained separately. It is suitable for smaller programs but becomes difficult to maintain as the system grows.
+
+**Object-Oriented Programming:**
+
+Object-oriented programming organises a program around objects that combine data and related functions. It supports encapsulation, abstraction, inheritance and polymorphism.
+
+For the City Metro Smart-Card System, object-oriented programming is more suitable because passenger details, card balances, journeys and fare calculations can be organised into separate classes.
+
+## 5. Complexity Analysis
+
+**Procedural Programming:**
+- Time Complexity per Journey: O(1)
+- Space Complexity per Card: O(1)
+
+**Object-Oriented Programming:**
+- Time Complexity per Journey: O(1)
+- Space Complexity per Card: O(1)
+
+Both approaches have constant time complexity for a single journey. However, object-oriented programming provides better organisation, reusability and maintainability as the system expands.
+
+## 6. Conclusion
+
+Object-oriented programming is suitable for designing the City Metro Smart-Card System because it provides encapsulation, abstraction, inheritance and polymorphism. It helps organise the system into manageable components and makes it easier to maintain, test and extend.
