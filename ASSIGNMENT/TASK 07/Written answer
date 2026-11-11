@@ -1,0 +1,154 @@
+TASK 7 – From Procedural to Object-Oriented
+1. Introduction
+In this task, I have written the metro smart-card fare system using two methods. The first method uses separate variables and functions. The second method uses a SmartCard class.
+
+Both methods calculate the fare and check whether the passenger has enough balance to travel.
+2. Procedural programming
+In procedural programming, the balance is stored in a separate variable and the operations are performed using functions.
+
+C++ Code:
+Code – Procedural Method
+#include <iostream>
+using namespace std;
+
+const int MIN_BALANCE = 5000;
+
+bool canTravel(long long balance, long long fare)
+{
+    return balance - fare >= MIN_BALANCE;
+}
+
+void deduct(long long &balance, long long fare)
+{
+    if (canTravel(balance, fare))
+    {
+        balance = balance - fare;
+        cout << "Journey allowed\n";
+    }
+    else
+    {
+        cout << "Journey denied\n";
+    }
+}
+
+int main()
+{
+    long long balance = 10000;
+    long long fare = 3000;
+
+    deduct(balance, fare);
+
+    cout << "Remaining balance: Rs "
+         << balance / 100 << endl;
+
+    return 0;
+}
+Output:
+Journey allowed
+Remaining balance: Rs 70
+Here, the balance is stored separately from the functions. The canTravel() function checks whether at least ₹50 will remain after paying the fare. The deduct() function deducts the fare only when the condition is satisfied.
+3. Object-oriented programming
+In OOP, I use a SmartCard class to store the balance and perform the operations.
+
+The balance is kept private, so it cannot be changed directly from outside the class.
+
+C++ Code:
+#include <iostream>
+using namespace std;
+
+class SmartCard
+{
+private:
+    long long balance;
+    const long long MIN_BALANCE = 5000;
+
+public:
+    SmartCard(long long b)
+    {
+        balance = b;
+    }
+
+    bool canTravel(long long fare)
+    {
+        return balance - fare >= MIN_BALANCE;
+    }
+
+    void deduct(long long fare)
+    {
+        if (canTravel(fare))
+        {
+            balance = balance - fare;
+            cout << "Journey allowed\n";
+        }
+        else
+        {
+            cout << "Journey denied\n";
+        }
+    }
+
+    void showBalance()
+    {
+        cout << "Remaining balance: Rs "
+             << balance / 100 << endl;
+    }
+};
+
+int main()
+{
+    SmartCard card(10000);
+
+    card.deduct(3000);
+
+    card.showBalance();
+
+    return 0;
+}
+Output:
+Journey allowed
+Remaining balance: Rs 70
+In this method, the balance and its operations are kept together inside the SmartCard class. The private balance cannot be directly modified from outside the class.
+4. How does the class prevent a negative balance?
+The canTravel() function checks the balance before deducting the fare.
+
+For example:
+- Starting balance = ₹100
+- Fare = ₹30
+- Remaining balance = ₹70
+- Minimum required balance = ₹50
+Since ₹70 is greater than ₹50, the journey is allowed.
+
+If the remaining balance is less than ₹50, the journey is denied and the fare is not deducted.
+5. Which method is easier to change?
+I think the OOP method is easier to maintain when the minimum balance changes.
+
+In the procedural method, the rule is handled separately through functions. In the OOP method, the balance and its rules are kept inside one class. So, changes related to the smart card can be made in one place.
+
+For example, if the minimum balance changes from ₹50 to ₹60, I only need to change the MIN_BALANCE value in the class.
+6. Alternative Concept – Public Balance
+Instead of keeping the balance private, we can make it public.
+
+Example:
+class SmartCard
+{
+public:
+    long long balance;
+};
+Now, any part of the program can directly change the balance.
+
+For example:
+SmartCard card;
+card.balance = -500;
+This is a problem because the balance can become negative. It can also go below the required ₹50.
+7. Complexity Analysis
+Both procedural and OOP methods have the same time and space complexity.
+- Time Complexity: O(1) – Checking and deducting the fare takes constant time.
+- Space Complexity: O(1) – Only a fixed number of variables are used for one card.
+Making the balance private does not increase the time or space complexity.
+
+However, keeping it private makes the program safer because other parts of the program cannot directly change the balance.
+8. Conclusion
+From this task, I understood that both procedural and OOP methods can perform the same fare calculation. However, I prefer the OOP method because the balance and its operations are kept together. Keeping the balance private also prevents unwanted changes and helps maintain the ₹50 minimum balance rule.
+
+
+
+
