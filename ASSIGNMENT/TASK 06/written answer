@@ -1,0 +1,249 @@
+# TASK 6 – DESIGN THE CONTROL STRUCTURES
+
+## 1. Introduction
+
+Control structures are used to control the flow of a program. In the metro smart-card system, they help to select the correct fare, calculate the peak-hour surcharge, check the card balance and process multiple journeys.
+
+## 2. Use of Different Decision Statements
+
+### A. If-else statement
+
+I would use an `if-else` statement to check whether the passenger has enough balance to complete the journey.
+
+- If the remaining balance is at least ₹50, the journey is allowed.
+- Otherwise, the journey is denied.
+
+Example:
+
+```cpp
+if (balance - fare >= 5000)
+{
+    balance = balance - fare;
+}
+else
+{
+    cout << "Journey denied";
+}
+```
+
+### B. Switch statement
+
+A `switch` statement is suitable for selecting the fare based on the zone.
+
+- Inner Zone – ₹10
+- Middle Zone – ₹20
+- Outer Zone – ₹30
+
+It makes the program easier to understand because each zone has a separate case.
+
+### C. Conditional operator
+
+The conditional operator `?:` is used for simple decisions. It is a shorter alternative to an if-else statement.
+
+Example:
+
+```cpp
+int fare = peak ? 1200 : 1000;
+```
+
+If it is peak time, the fare is 1200 paise (₹12). Otherwise, it is 1000 paise (₹10), assuming an Inner Zone journey.
+
+## 3. Use of Different Loops
+
+**For loop:** A for loop is useful when the number of journeys is already known. It can process a fixed number of journeys.
+
+**Range-based for loop:** It can process every journey in an array without using an index. I prefer this for the given program because it is simple and readable.
+
+**While loop:** A while loop is useful when the number of journeys is not known in advance. It can continue processing until there are no more journeys.
+
+For this metro program, I prefer a range-based for loop because the journeys are already stored in an array.
+
+## 4. Use of Break and Continue
+
+- `break` is used to stop a loop or exit a switch case.
+- `continue` skips the current iteration and moves to the next journey.
+
+For example, if a journey has an invalid zone, `continue` can be used to skip that journey without stopping the entire program.
+
+## 5. What Happens When No Switch Case Matches?
+
+When none of the cases matches the given value, the `default` statement is executed.
+
+In this program, the default case can be used to handle an invalid zone and return a safe value.
+
+## 6. Algorithmic Pseudocode
+
+**Algorithm: Calculate Metro Fare**
+
+```text
+START
+
+INPUT zone
+INPUT peak
+INPUT balance
+
+SET baseFare = 0
+
+SWITCH zone
+
+    CASE Inner:
+        SET baseFare = 1000
+        BREAK
+
+    CASE Middle:
+        SET baseFare = 2000
+        BREAK
+
+    CASE Outer:
+        SET baseFare = 3000
+        BREAK
+
+    DEFAULT:
+        OUTPUT "Invalid zone"
+        STOP
+
+END SWITCH
+
+IF peak = TRUE THEN
+    SET fare = baseFare + (baseFare * 20 / 100)
+ELSE
+    SET fare = baseFare
+END IF
+
+IF balance - fare >= 5000 THEN
+    SET balance = balance - fare
+    OUTPUT fare
+    OUTPUT balance
+ELSE
+    OUTPUT "Journey denied"
+END IF
+
+STOP
+```
+
+## 7. Completed C++ Program
+
+In this program, I completed both TODO sections using a switch statement and integer paise. Integer paise is used to avoid decimal calculation errors.
+
+```cpp
+#include <iomanip>
+#include <iostream>
+
+enum class Zone { Inner, Middle, Outer };
+
+constexpr int BASE_PAISE[] = {1000, 2000, 3000};
+constexpr int PEAK_SURCHARGE_PERCENT = 20;
+constexpr long long MIN_BALANCE_PAISE = 5000;
+
+long long fare(Zone z, bool peak)
+{
+    long long baseFare = 0;
+
+    switch (z)
+    {
+        case Zone::Inner:
+            baseFare = BASE_PAISE[0];
+            break;
+
+        case Zone::Middle:
+            baseFare = BASE_PAISE[1];
+            break;
+
+        case Zone::Outer:
+            baseFare = BASE_PAISE[2];
+            break;
+
+        default:
+            return 0;
+    }
+
+    if (peak)
+    {
+        baseFare = baseFare +
+                   (baseFare * PEAK_SURCHARGE_PERCENT / 100);
+    }
+
+    return baseFare;
+}
+
+bool canTravel(long long balance, long long f)
+{
+    return balance - f >= MIN_BALANCE_PAISE;
+}
+
+int main()
+{
+    long long balance = 10000;
+
+    struct Trip
+    {
+        Zone zone;
+        bool peak;
+    };
+
+    Trip trips[] = {
+        {Zone::Inner, false},
+        {Zone::Outer, true},
+        {Zone::Middle, false}
+    };
+
+    for (const Trip& t : trips)
+    {
+        long long f = fare(t.zone, t.peak);
+
+        if (canTravel(balance, f))
+        {
+            balance -= f;
+
+            std::cout << "Fare Rs " << f / 100 << '.'
+                      << std::setw(2)
+                      << std::setfill('0') << f % 100
+                      << std::setfill(' ');
+        }
+        else
+        {
+            std::cout << "Denied (low balance)";
+        }
+
+        std::cout << " balance Rs " << balance / 100 << '\n';
+    }
+}
+```
+
+## 8. Predicted Output
+
+Before running the program, I predict that the output will be:
+
+```text
+Fare Rs 10.00 balance Rs 90
+Fare Rs 36.00 balance Rs 54
+Denied (low balance) balance Rs 54
+```
+
+### Explanation
+
+1. The first journey is in the Inner Zone. The fare is ₹10, so the balance becomes ₹90.
+2. The second journey is in the Outer Zone during peak hours. The fare is ₹30 plus a 20% surcharge of ₹6. The total fare is ₹36, leaving ₹54.
+3. The third journey is in the Middle Zone. The fare is ₹20, but the remaining balance would become ₹34. Since it is below ₹50, the journey is denied.
+
+## 9. Peak-Hour Boundary Test
+
+The peak-hour condition should be:
+
+```cpp
+(hour >= 8 && hour < 10) ||
+(hour >= 17 && hour < 20)
+```
+
+This means:
+
+- 8 AM – Peak hour
+- 10 AM – Not peak hour
+- 5 PM – Peak hour
+- 8 PM – Not peak hour
+
+The condition correctly excludes exactly 10 AM and exactly 8 PM.
+
+## 10. Alternative Concept – Using an Array Instead of Switch
+
+Instead
