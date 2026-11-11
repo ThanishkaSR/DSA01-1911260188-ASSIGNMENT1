@@ -1,0 +1,108 @@
+# TASK 5 – WRITE CORRECT EXPRESSIONS WITH THE RIGHT PRECEDENCE
+
+## 1. Introduction
+
+In C++, operators are used to perform calculations, comparisons and logical operations. Operator precedence decides which operation is performed first when an expression contains multiple operators.
+
+In the metro smart-card system, operators are important for calculating fares, checking peak hours and applying concessions. Using the correct expressions helps avoid calculation mistakes.
+
+## 2. Expressions for the Metro Fare System
+
+### a) Peak-Hour Check
+
+The metro has two peak-hour periods:
+
+- Morning: 8 AM to before 10 AM.
+- Evening: 5 PM to before 8 PM.
+
+The correct expression is:
+
+```cpp
+(hour >= 8 && hour < 10) || (hour >= 17 && hour < 20)
+```
+
+Here:
+- `>=` and `<` are used to check the time.
+- `&&` checks whether both conditions are true.
+- `||` checks whether either peak-hour condition is true.
+
+This expression correctly excludes exactly 10 AM and 8 PM.
+
+### b) Surcharge Calculation
+
+During peak hours, an additional 20% is added to the base fare.
+
+```cpp
+fare += (fare * 20) / 100;
+```
+
+Here, `*` is performed before `/`, and the result is added to the existing fare using `+=`.
+
+For example, if the base fare is 3000 paise (Rs 30), the surcharge is 600 paise (Rs 6).
+
+The final fare becomes Rs 36.
+
+### c) Concession Calculation
+
+Students and senior citizens receive a concession. The concession percentage can be stored in a separate variable because the assignment does not specify an exact percentage.
+
+```cpp
+fare -= (fare * concessionPercent) / 100;
+```
+
+Here, the concession amount is calculated and subtracted from the original fare.
+
+The `-=` operator updates the fare by subtracting the concession.
+
+## 3. Operator Precedence and Associativity
+
+Operator precedence decides which operator is evaluated first. Associativity decides the order when operators have the same precedence.
+
+Some important operators used in this task are:
+
+- `*`, `/`, `%` have the same precedence and are evaluated from left to right.
+- `+` and `-` are evaluated after multiplication, division and remainder.
+- `<`, `>`, `>=` are used for comparison.
+- `&&` is evaluated before `||`.
+- `?:` is the conditional operator and has lower precedence than logical operators.
+- `=`, `+=` and `-=` have low precedence and are evaluated from right to left.
+
+For example:
+
+```cpp
+int result = 5 + 3 * 2;
+```
+
+Multiplication happens first, so the answer is 11.
+
+But:
+
+```cpp
+int result = (5 + 3) * 2;
+```
+
+The brackets are evaluated first, so the answer is 16.
+
+Brackets make expressions easier to understand and reduce mistakes.
+
+## 4. Difference Between x++ and ++x
+
+Both operators increase a variable by 1, but they work differently.
+
+**Post-increment (x++):**
+
+The current value is used first, and then the variable is increased.
+
+```cpp
+int x = 5;
+int y = x++;
+```
+
+Here, `y` becomes 5 and `x` becomes 6.
+
+**Pre-increment (++x):**
+
+The variable is increased first, and then the updated value is used.
+
+```cpp
+int
